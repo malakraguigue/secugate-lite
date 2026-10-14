@@ -48,4 +48,33 @@ def evaluer(sig: Signal, nb_echecs: int = 0) -> str:
 
 
 def analyser(sig: Signal, base: dict, nb_echecs: int = 0) -> Verdict:
-    raise NotImplementedError
+    niveau = evaluer(sig, nb_echecs)
+
+    procedures = chercher_procedures(sig, base)
+
+    if procedures:
+        explication = " | ".join(procedures)
+    else:
+        explication = "Cause inconnue : analyse manuelle requise"
+
+    if sig.type == "LOGIN_ECHEC" and niveau == "CRITIQUE":
+        action = f"Bloquer l'IP {sig.ip}"
+    elif sig.type == "FAILLE":
+        action = f"Corriger la faille dans {sig.cible}"
+    else:
+        action = "Surveiller"
+
+    sensible = niveau in ["ELEVEE", "CRITIQUE"]
+
+    verdict = Verdict(
+        signal_id=sig.id,
+        niveau=niveau,
+        explication=explication,
+        action=action,
+        sensible=sensible,
+        sources=[sig.source]
+    )
+
+    sig.statut = "ANALYSE"
+
+    return verdict
