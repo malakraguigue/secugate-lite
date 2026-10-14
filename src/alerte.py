@@ -24,7 +24,16 @@ def rediger(sig: Signal, verdict: Verdict) -> str:
         f"Sources : {', '.join(verdict.sources)}",
     ]
     return "\n".join(lignes)
+
 def alerter(sig: Signal, verdict: Verdict, journal: list) -> Alerte:
- raise NotImplementedError
+    alerte = Alerte(
+        signal_id=sig.id,
+        canal=choisir_canal(verdict.niveau),
+        destinataire="equipe-secu",
+        texte=rediger(sig, verdict),
+    )
+    journal.append(alerte)
+    sig.statut = "ALERTE"
+    return alerte
 def valider_action(verdict: Verdict, reponse: str) -> bool:
  raise NotImplementedError
