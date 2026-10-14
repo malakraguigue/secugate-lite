@@ -1,4 +1,7 @@
+
 from src.contrat import Signal, Verdict
+
+
 def est_deja_vu(sig: Signal, vus: set) -> bool:
     cle = (
         sig.timestamp,
@@ -14,11 +17,24 @@ def est_deja_vu(sig: Signal, vus: set) -> bool:
 
     vus.add(cle)
     return False
+
+
 def compter_echecs(sig: Signal, compteur: dict) -> int:
- raise NotImplementedError
+    if sig.type == "LOGIN_ECHEC":
+        ip = sig.ip
+        compteur[ip] = compteur.get(ip, 0) + 1
+        return compteur[ip]
+
+    return 0
+
+
 def chercher_procedures(sig: Signal, base: dict) -> list:
- raise NotImplementedError
+    raise NotImplementedError
+
+
 def evaluer(sig: Signal, nb_echecs: int = 0) -> str:
- raise NotImplementedError
+    raise NotImplementedError
+
+
 def analyser(sig: Signal, base: dict, nb_echecs: int = 0) -> Verdict:
- raise NotImplementedError
+    raise NotImplementedError
