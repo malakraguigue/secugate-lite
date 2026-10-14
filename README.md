@@ -5,7 +5,7 @@ Mini-plateforme de surveillance des accès d'une application : trois agents
 (src/contrat.py).
 ## Équipe
 - Malak Raguigue : agent Collecte (A) et agent C
-- Aya El Amrani : Agent Détection
+- Aya El Amrani : Agent Détection et agent C 
 secugate-lite/
 ├── README.md
 ├── .gitignore
