@@ -5,7 +5,8 @@ from src.contrat import Signal, PROCEDURES
 from src.detection import (
     est_deja_vu,
     compter_echecs,
-    chercher_procedures
+    chercher_procedures,
+    evaluer
 )
 
 
@@ -64,7 +65,18 @@ class TestDetection(unittest.TestCase):
             [PROCEDURES["injection"], PROCEDURES["token"]]
         )
 
+    def test_evaluer_echecs_login(self):
+        e = sig("LOGIN_ECHEC", "MOYENNE")
+
+        self.assertEqual(evaluer(e, 5), "CRITIQUE")
+        self.assertEqual(evaluer(e, 4), "MOYENNE")
+        self.assertEqual(evaluer(e, 6), "CRITIQUE")
+
+    def test_evaluer_autre_signal(self):
+        e = sig("FAILLE", "ELEVEE")
+
+        self.assertEqual(evaluer(e), "ELEVEE")
+
 
 if __name__ == "__main__":
     unittest.main()
-

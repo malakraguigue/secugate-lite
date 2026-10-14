@@ -39,7 +39,12 @@ def chercher_procedures(sig: Signal, base: dict) -> list:
 
 
 def evaluer(sig: Signal, nb_echecs: int = 0) -> str:
-    raise NotImplementedError
+    if sig.type == "LOGIN_ECHEC":
+        if nb_echecs >= 5:
+            return "CRITIQUE"
+        return "MOYENNE"
+
+    return sig.gravite
 
 
 def analyser(sig: Signal, base: dict, nb_echecs: int = 0) -> Verdict:
