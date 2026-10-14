@@ -36,4 +36,6 @@ def alerter(sig: Signal, verdict: Verdict, journal: list) -> Alerte:
     sig.statut = "ALERTE"
     return alerte
 def valider_action(verdict: Verdict, reponse: str) -> bool:
- raise NotImplementedError
+    if not verdict.sensible:
+        return True
+    return reponse.strip().lower() in REPONSES_OUI
