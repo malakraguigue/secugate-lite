@@ -1,8 +1,12 @@
 
 import unittest
 
-from src.contrat import Signal
-from src.detection import est_deja_vu, compter_echecs
+from src.contrat import Signal, PROCEDURES
+from src.detection import (
+    est_deja_vu,
+    compter_echecs,
+    chercher_procedures
+)
 
 
 def sig(type_="ACCES", gravite="FAIBLE",
@@ -34,6 +38,33 @@ class TestDetection(unittest.TestCase):
         self.assertEqual(compter_echecs(e, compteur), 2)
         self.assertEqual(compteur["10.0.0.5"], 2)
 
+    def test_chercher_procedures(self):
+        e = sig(
+            "FAILLE",
+            "ELEVEE",
+            "Une injection SQL a ete detectee"
+        )
+
+        resultat = chercher_procedures(e, PROCEDURES)
+
+        self.assertEqual(resultat, [PROCEDURES["injection"]])
+
+    def test_aucune_procedure(self):
+        e = sig(message="Probleme inconnu")
+        resultat = chercher_procedures(e, PROCEDURES)
+
+        self.assertEqual(resultat, [])
+
+    def test_recherche_sans_casse(self):
+        e = sig(message="INJECTION et TOKEN detectes")
+        resultat = chercher_procedures(e, PROCEDURES)
+
+        self.assertEqual(
+            resultat,
+            [PROCEDURES["injection"], PROCEDURES["token"]]
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
+
