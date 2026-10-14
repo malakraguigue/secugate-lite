@@ -4,7 +4,7 @@ Mini-plateforme de surveillance des accès d'une application : trois agents
 (Collecte, Détection, Alerte) qui échangent via un contrat commun
 (src/contrat.py).
 ## Équipe
-- Malak Raguigue : agent Collecte (A)
+- Malak Raguigue : agent Collecte (A) et agent C
 - Aya El Amrani : Agent Détection
 secugate-lite/
 ├── README.md
