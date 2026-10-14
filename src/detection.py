@@ -29,11 +29,22 @@ def compter_echecs(sig: Signal, compteur: dict) -> int:
 
 
 def chercher_procedures(sig: Signal, base: dict) -> list:
-    raise NotImplementedError
+    procedures = []
+
+    for mot_cle, procedure in base.items():
+        if mot_cle.lower() in sig.message.lower():
+            procedures.append(procedure)
+
+    return procedures
 
 
 def evaluer(sig: Signal, nb_echecs: int = 0) -> str:
-    raise NotImplementedError
+    if sig.type == "LOGIN_ECHEC":
+        if nb_echecs >= 5:
+            return "CRITIQUE"
+        return "MOYENNE"
+
+    return sig.gravite
 
 
 def analyser(sig: Signal, base: dict, nb_echecs: int = 0) -> Verdict:
