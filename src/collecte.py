@@ -2,7 +2,12 @@ import re
 
 from src.contrat import Signal
 PARAMS_SENSIBLES = re.compile(r"\b(token|password|session|key)=[^&\s]*", re.IGNORECASE)
-
+GRAVITES_SCAN = {
+    "blocker": "CRITIQUE",
+    "critical": "ELEVEE",
+    "major": "MOYENNE",
+    "minor": "FAIBLE",
+}
 def masquer_ip(ip: str) -> str:
     parties = ip.split(".")
     if len(parties) != 4:
@@ -43,4 +48,19 @@ def normaliser_acces(ligne: str, numero: int, cible: str = "web-app") -> Signal:
         message=message,
     )
 def normaliser_scan(rapport: dict, numero: int) -> Signal:
- raise NotImplementedError
+    for cle in ("rule", "component", "severity", "message", "date"):
+        if cle not in rapport:
+            raise ValueError(f"Cle manquante dans le rapport : {cle}")
+
+    gravite = GRAVITES_SCAN.get(rapport["severity"].lower(), "FAIBLE")
+
+    return Signal(
+        id=f"SIG-{numero:05d}",
+        timestamp=rapport["date"],
+        source="SCAN",
+        ip="",
+        cible=rapport["component"],
+        type="FAILLE",
+        gravite=gravite,
+        message=f"Faille {rapport['rule']} : {rapport['message']}",
+    )
