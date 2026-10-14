@@ -35,6 +35,7 @@ def alerter(sig: Signal, verdict: Verdict, journal: list) -> Alerte:
     journal.append(alerte)
     sig.statut = "ALERTE"
     return alerte
+
 def valider_action(verdict: Verdict, reponse: str) -> bool:
     if not verdict.sensible:
         return True
